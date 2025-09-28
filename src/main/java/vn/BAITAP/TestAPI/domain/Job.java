@@ -39,6 +39,25 @@ public class Job {
     @JsonIgnore
     private List<JobCompany> jobCompanies;
 
+    private String typeJob;
+    private long salary;
+
+    public String getTypeJob() {
+        return typeJob;
+    }
+
+    public void setTypeJob(String typeJob) {
+        this.typeJob = typeJob;
+    }
+
+    public long getSalary() {
+        return salary;
+    }
+
+    public void setSalary(long salary) {
+        this.salary = salary;
+    }
+
     public long getId() {
         return id;
     }

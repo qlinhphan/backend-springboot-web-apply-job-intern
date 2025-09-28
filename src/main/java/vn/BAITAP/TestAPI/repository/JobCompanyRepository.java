@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import vn.BAITAP.TestAPI.domain.Company;
 import vn.BAITAP.TestAPI.domain.Job;
 import vn.BAITAP.TestAPI.domain.JobCompany;
 import vn.BAITAP.TestAPI.domain.User;
@@ -22,6 +23,8 @@ public interface JobCompanyRepository extends JpaRepository<JobCompany, Long> {
     public JobCompany findById(long id);
 
     public JobCompany findByJob(Job j);
+
+    public List<JobCompany> findByCompany(Company p);
 
     public void deleteByJob(Job j);
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import vn.BAITAP.TestAPI.domain.Job;
@@ -35,5 +36,9 @@ public class JobService {
 
     public void deleteJobById(long id) {
         this.jobRepository.deleteById(id);
+    }
+
+    public List<Job> findAllToGetIdAfterFindJC(Specification<Job> sp) {
+        return this.jobRepository.findAll(sp);
     }
 }

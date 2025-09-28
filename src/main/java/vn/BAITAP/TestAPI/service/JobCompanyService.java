@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import vn.BAITAP.TestAPI.domain.Company;
 import vn.BAITAP.TestAPI.domain.Job;
 import vn.BAITAP.TestAPI.domain.JobCompany;
 import vn.BAITAP.TestAPI.domain.User;
@@ -45,5 +46,9 @@ public class JobCompanyService {
 
     public void deleteJCByJob(Job j) {
         this.jobCompanyRepository.deleteByJob(j);
+    }
+
+    public List<JobCompany> findJCByCom(Company p) {
+        return this.jobCompanyRepository.findByCompany(p);
     }
 }
