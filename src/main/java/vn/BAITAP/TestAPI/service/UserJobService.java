@@ -34,4 +34,12 @@ public class UserJobService {
         return this.userJobRepository.findByUser(user);
     }
 
+    public void deleteUserJobById(long id) {
+        this.userJobRepository.deleteById(id);
+    }
+
+    public UserJob findUJById(long id) {
+        return this.userJobRepository.findById(id);
+    }
+
 }

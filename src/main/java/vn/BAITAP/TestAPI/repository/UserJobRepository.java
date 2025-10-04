@@ -17,4 +17,8 @@ public interface UserJobRepository extends JpaRepository<UserJob, Long> {
     public Page<UserJob> findByUser(Pageable pageable, User user);
 
     public List<UserJob> findByUser(User user);
+
+    public void deleteById(long id);
+
+    public UserJob findById(long id);
 }

@@ -22,10 +22,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -85,6 +87,16 @@ public class UserJobController {
         op.setSumObj(userJobNoPage.size());
         op.setData(lUserJob);
         return ResponseEntity.ok().body(op);
+    }
+
+    @DeleteMapping("/del-user-job-by-id/{id}")
+    public ResponseEntity<?> getMethodName(@PathVariable("id") long id) {
+        UserJob uj = this.userJobService.findUJById(id);
+        if (uj == null) {
+            throw new NotExistUserById("Khong ton tai cong viec nay trong danh sach dki cua ban");
+        }
+        this.userJobService.deleteUserJobById(id);
+        return ResponseEntity.ok().body("Xoa thanh cong");
     }
 
 }

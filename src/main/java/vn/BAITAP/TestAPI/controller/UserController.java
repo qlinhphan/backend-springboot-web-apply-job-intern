@@ -125,7 +125,6 @@ public class UserController {
                     }
                     userToUpdate.setEmail(email);
                 }
-
             }
             if (name != null) {
                 userToUpdate.setName(name);
