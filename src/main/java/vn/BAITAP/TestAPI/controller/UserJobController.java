@@ -56,6 +56,9 @@ public class UserJobController {
             throw new NotExistUserById("Chua co manager nao them cv nay");
         }
         Job job = this.jobService.findJobById(Long.parseLong(idJob));
+        if (job.isActive() == false) {
+            throw new NotExistUserById("Job nay ko con tuyen nua");
+        }
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = this.userService.findUserByEmail(email);
         List<UserJob> userJobs = this.userJobService.findAllNoHasPage();
@@ -63,6 +66,11 @@ public class UserJobController {
         if (checkUserJobs) {
             throw new NotExistUserById("Ban da dang ky job nay roi");
         }
+        job.setSumPeople(job.getSumPeople() + 1);
+        if (job.getSumPeople() == job.getLimitPeopleForJob()) {
+            job.setActive(false);
+        }
+        this.jobService.saveJob(job);
         UserJob userJob = new UserJob();
         userJob.setJob(job);
         userJob.setUser(user);

@@ -193,8 +193,8 @@ public class JobCompanyController {
     // tim kiem nhung job_com nho hon 1500$
     @GetMapping("/range-salary")
     public ResponseEntity<?> getMethodNames(@RequestParam(value = "money", required = false) String money,
-            @RequestParam(value = "typeJob", required = false) String typeJob,
-            @RequestParam(value = "nameJob", required = false) String nameJob,
+            @RequestParam(value = "typeJob", required = false, defaultValue = "") String typeJob,
+            @RequestParam(value = "nameJob", required = false, defaultValue = "") String nameJob,
             @RequestParam("current") String current,
             @RequestParam("limit") String limit) {
         if (money.equals("be-hon-bang-1500")) {
@@ -294,38 +294,55 @@ public class JobCompanyController {
             return ResponseEntity.ok().body(op);
         }
 
-        if (money.length() == 0) {
-            long salary = 0;
-            Specification<Job> spec = this.jSpecification.GreaterThanCon(salary, typeJob, nameJob);
-            List<Job> listJ = this.jobService.findAllToGetIdAfterFindJC(spec);
+        // if (money.length() == 0) {
+        // long salary = 0;
+        // Specification<Job> spec = this.jSpecification.GreaterThanCon(salary, typeJob,
+        // nameJob);
+        // List<Job> listJ = this.jobService.findAllToGetIdAfterFindJC(spec);
 
-            List<JobCompany> jcs = new ArrayList<>();
-            for (Job j : listJ) {
-                if (j.getSalary() != 0) {
-                    JobCompany jc = this.jobCompanyService.findJCByJob(j);
-                    jcs.add(jc);
-                }
-            }
+        // List<JobCompany> jcs = new ArrayList<>();
+        // for (Job j : listJ) {
+        // if (j.getSalary() != 0) {
+        // JobCompany jc = this.jobCompanyService.findJCByJob(j);
+        // jcs.add(jc);
+        // }
+        // }
 
-            int limit_int = Integer.parseInt(limit);
-            int current_int = Integer.parseInt(current);
-            Pageable pageable = PageRequest.of(current_int - 1, limit_int);
-            final int start = (int) pageable.getOffset();
-            final int end = Math.min((start + pageable.getPageSize()), jcs.size());
-            final Page<JobCompany> page = new PageImpl<>(jcs.subList(start, end), pageable,
-                    jcs.size());
-            List<JobCompany> data = page.getContent();
-            ObjectPaginate op = new ObjectPaginate<>();
-            op.setCurrent(current_int);
-            op.setData(data);
-            op.setLimit(limit_int);
-            op.setPages(page.getTotalPages());
-            op.setSumObj(jcs.size());
+        // int limit_int = Integer.parseInt(limit);
+        // int current_int = Integer.parseInt(current);
+        // Pageable pageable = PageRequest.of(current_int - 1, limit_int);
+        // final int start = (int) pageable.getOffset();
+        // final int end = Math.min((start + pageable.getPageSize()), jcs.size());
+        // final Page<JobCompany> page = new PageImpl<>(jcs.subList(start, end),
+        // pageable,
+        // jcs.size());
+        // List<JobCompany> data = page.getContent();
+        // ObjectPaginate op = new ObjectPaginate<>();
+        // op.setCurrent(current_int);
+        // op.setData(data);
+        // op.setLimit(limit_int);
+        // op.setPages(page.getTotalPages());
+        // op.setSumObj(jcs.size());
 
-            return ResponseEntity.ok().body(op);
-        }
+        // return ResponseEntity.ok().body(op);
+        // }
 
-        return ResponseEntity.ok().body("");
+        int limit_int = Integer.parseInt(limit);
+        int current_int = Integer.parseInt(current);
+        Pageable pageable = PageRequest.of(current_int - 1, limit_int);
+        Page<JobCompany> jcs = this.jobCompanyService.findAllJobComps(pageable);
+        List<JobCompany> dataPagi = jcs.getContent();
+
+        List<JobCompany> allData = this.jobCompanyService.findAllNoHasPage();
+
+        ObjectPaginate<Object> op = new ObjectPaginate<>();
+        op.setCurrent(current_int);
+        op.setData(dataPagi);
+        op.setLimit(limit_int);
+        op.setPages(jcs.getTotalPages());
+        op.setSumObj(allData.size());
+
+        return ResponseEntity.ok().body(op);
 
     }
 

@@ -26,10 +26,29 @@ public class User {
     private String name;
     private String address;
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<UserJob> usersJobs;
 
     @Column(columnDefinition = "MEDIUMTEXT")
     private String refreshToken;
+
+    private int age;
+
+    public List<UserJob> getUsersJobs() {
+        return usersJobs;
+    }
+
+    public void setUsersJobs(List<UserJob> usersJobs) {
+        this.usersJobs = usersJobs;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
 
     public String getRefreshToken() {
         return refreshToken;

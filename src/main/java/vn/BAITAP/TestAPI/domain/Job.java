@@ -42,6 +42,8 @@ public class Job {
     private String typeJob;
     private long salary;
 
+    private long sumPeople;
+
     public String getTypeJob() {
         return typeJob;
     }
@@ -114,11 +116,6 @@ public class Job {
         this.jobRequire = jobRequire;
     }
 
-    @PrePersist
-    public void defaultOfActive() {
-        this.active = true;
-    }
-
     public List<JobCompany> getJobCompanies() {
         return jobCompanies;
     }
@@ -133,6 +130,20 @@ public class Job {
 
     public void setLimitPeopleForJob(long limitPeopleForJob) {
         this.limitPeopleForJob = limitPeopleForJob;
+    }
+
+    public long getSumPeople() {
+        return sumPeople;
+    }
+
+    public void setSumPeople(long sumPeople) {
+        this.sumPeople = sumPeople;
+    }
+
+    @PrePersist
+    public void defaultOfActive() {
+        this.active = true;
+        this.sumPeople = 0;
     }
 
 }
