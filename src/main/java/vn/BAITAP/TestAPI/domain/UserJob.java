@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
@@ -22,6 +23,8 @@ public class UserJob {
     @ManyToOne
     @JoinColumn(name = "job_id")
     private Job job;
+
+    private boolean allowDel;
 
     public long getId() {
         return id;
@@ -45,6 +48,19 @@ public class UserJob {
 
     public void setJob(Job job) {
         this.job = job;
+    }
+
+    public boolean isAllowDel() {
+        return allowDel;
+    }
+
+    public void setAllowDel(boolean allowDel) {
+        this.allowDel = allowDel;
+    }
+
+    @PrePersist
+    public void defaultOfAllowDel() {
+        this.allowDel = true;
     }
 
 }

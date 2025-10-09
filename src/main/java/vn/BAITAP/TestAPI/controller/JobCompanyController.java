@@ -6,12 +6,14 @@ import vn.BAITAP.TestAPI.domain.Company;
 import vn.BAITAP.TestAPI.domain.Job;
 import vn.BAITAP.TestAPI.domain.JobCompany;
 import vn.BAITAP.TestAPI.domain.User;
+import vn.BAITAP.TestAPI.domain.UserJob;
 import vn.BAITAP.TestAPI.domain.dto.JobCompanyDTO;
 import vn.BAITAP.TestAPI.domain.dto.ObjectPaginate;
 import vn.BAITAP.TestAPI.domain.dto.TableManagerCreated;
 import vn.BAITAP.TestAPI.service.CompanyService;
 import vn.BAITAP.TestAPI.service.JobCompanyService;
 import vn.BAITAP.TestAPI.service.JobService;
+import vn.BAITAP.TestAPI.service.UserJobService;
 import vn.BAITAP.TestAPI.service.UserService;
 import vn.BAITAP.TestAPI.service.Except.NotExistUserById;
 import vn.BAITAP.TestAPI.service.Spec.CompanySpecification;
@@ -46,15 +48,18 @@ public class JobCompanyController {
     private UserService userService;
     private JobSpecification jSpecification;
     private CompanySpecification companySpecification;
+    private UserJobService userJobService;
 
     public JobCompanyController(JobCompanyService jobCompanyService, JobService jobService, UserService userService,
-            CompanyService companyService, JobSpecification jSpecification, CompanySpecification companySpecification) {
+            CompanyService companyService, JobSpecification jSpecification, CompanySpecification companySpecification,
+            UserJobService userJobService) {
         this.jobCompanyService = jobCompanyService;
         this.jobService = jobService;
         this.companyService = companyService;
         this.userService = userService;
         this.jSpecification = jSpecification;
         this.companySpecification = companySpecification;
+        this.userJobService = userJobService;
     }
 
     @PostMapping("/manager-add-job-company")
@@ -344,6 +349,23 @@ public class JobCompanyController {
 
         return ResponseEntity.ok().body(op);
 
+    }
+
+    @PostMapping("/ok-applied-success")
+    public ResponseEntity<?> postMethodName(@RequestParam("emailOfUserAppied") String email,
+            @RequestParam("idJob") String idJob) {
+        User userApplied = this.userService.findUserByEmail(email);
+        Job JobOfUserApplied = this.jobService.findJobById(Long.parseLong(idJob));
+
+        List<UserJob> userJobs = this.userJobService.findAllNoHasPage();
+        for (UserJob uj : userJobs) {
+            if (uj.getJob().equals(JobOfUserApplied) && uj.getUser().equals(userApplied)) {
+                uj.setAllowDel(false);
+                this.userJobService.saveUserJob(uj);
+            }
+        }
+
+        return ResponseEntity.ok().body("Tuyển dụng thành công");
     }
 
 }

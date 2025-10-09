@@ -97,12 +97,16 @@ public class UserJobController {
         return ResponseEntity.ok().body(op);
     }
 
+    // nguoi dung xoa job ma ho da dang ky
     @DeleteMapping("/del-user-job-by-id/{id}")
     public ResponseEntity<?> getMethodName(@PathVariable("id") long id) {
         UserJob uj = this.userJobService.findUJById(id);
         if (uj == null) {
             throw new NotExistUserById("Khong ton tai cong viec nay trong danh sach dki cua ban");
         }
+        Job j = uj.getJob();
+        j.setSumPeople(j.getSumPeople() - 1);
+        this.jobService.saveJob(j);
         this.userJobService.deleteUserJobById(id);
         return ResponseEntity.ok().body("Xoa thanh cong");
     }
