@@ -14,10 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 public class DashboardController {
 
     private UserService userService;
@@ -59,12 +61,21 @@ public class DashboardController {
         }
         long countOk = listOk.size();
 
+        List<UserJob> ujs = this.userJobService.findAllNoHasPage();
+        List<UserJob> ujsOk = new ArrayList<>();
+        for (UserJob userJob : ujs) {
+            if (userJob.isAllowDel() == false) {
+                ujsOk.add(userJob);
+            }
+        }
+
         DashboardDTO dbDTO = new DashboardDTO();
         dbDTO.setCountUser(countUsers);
         dbDTO.setCountJob(countJobs);
         dbDTO.setCountAllInListRegister(countAllListRegister);
         dbDTO.setCountPending(countPending);
         dbDTO.setCountSuccess(countOk);
+        dbDTO.setUserJobs(ujsOk);
 
         return ResponseEntity.ok().body(dbDTO);
     }

@@ -19,6 +19,7 @@ import vn.BAITAP.TestAPI.service.Except.NotExistUserById;
 import vn.BAITAP.TestAPI.service.Spec.CompanySpecification;
 import vn.BAITAP.TestAPI.service.Spec.JobSpecification;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -361,7 +362,9 @@ public class JobCompanyController {
         for (UserJob uj : userJobs) {
             if (uj.getJob().equals(JobOfUserApplied) && uj.getUser().equals(userApplied)) {
                 uj.setAllowDel(false);
+                uj.setTimeSend(Instant.now());
                 this.userJobService.saveUserJob(uj);
+
             }
         }
 

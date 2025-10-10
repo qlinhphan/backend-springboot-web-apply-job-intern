@@ -1,5 +1,10 @@
 package vn.BAITAP.TestAPI.domain;
 
+import java.time.Instant;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +30,9 @@ public class UserJob {
     private Job job;
 
     private boolean allowDel;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Ho_Chi_Minh")
+    private Instant timeSend;
 
     public long getId() {
         return id;
@@ -61,6 +69,14 @@ public class UserJob {
     @PrePersist
     public void defaultOfAllowDel() {
         this.allowDel = true;
+    }
+
+    public Instant getTimeSend() {
+        return timeSend;
+    }
+
+    public void setTimeSend(Instant timeSend) {
+        this.timeSend = timeSend;
     }
 
 }

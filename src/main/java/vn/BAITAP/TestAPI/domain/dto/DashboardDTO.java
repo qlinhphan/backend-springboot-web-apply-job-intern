@@ -1,11 +1,16 @@
 package vn.BAITAP.TestAPI.domain.dto;
 
+import java.util.List;
+
+import vn.BAITAP.TestAPI.domain.UserJob;
+
 public class DashboardDTO {
     private long countUser;
     private long countJob;
     private long countAllInListRegister;
     private long countPending;
     private long countSuccess;
+    private List<UserJob> userJobs;
 
     public long getCountUser() {
         return countUser;
@@ -45,6 +50,14 @@ public class DashboardDTO {
 
     public void setCountSuccess(long countSuccess) {
         this.countSuccess = countSuccess;
+    }
+
+    public List<UserJob> getUserJobs() {
+        return userJobs;
+    }
+
+    public void setUserJobs(List<UserJob> userJobs) {
+        this.userJobs = userJobs;
     }
 
 }
